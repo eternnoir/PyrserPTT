@@ -53,10 +53,13 @@ class WebPttBot(object):
         else:
             return False
 
+    def getBrowser(self):
+        return self._br
+
     def getHtmlContent(self):
         if self.__checkPage__() is True:
             response =  self._br.open(self._url)
-            return response
+            return response.read()
         else:
             raise Exception("Can not open target page")
 
