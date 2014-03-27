@@ -1,25 +1,27 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
+from mongoengine import *
+import datetime
 
 __author__ = 'frankwang'
 
-class Artical(object):
 
-    title = None
-    author= None
-    url= None
-    date= None
-    nrec= None
-    mark= None
-    htmlcontent= None
+class Artical(Document):
 
-    def __init__(self,Tital,Author,Url,Date,Nrec,Mark,Html):
-       self.title = Tital
+    title = StringField(required=True)
+    board = StringField(required=True)
+    author= StringField()
+    url= StringField()
+    date= StringField()
+    nrec= StringField()
+    mark= StringField()
+    updateDate = DateTimeField(default=datetime.datetime.now)
+    htmlcontent= StringField()
 
-       self.author = Author
-       self.url = Url
-       self.date = Date
-       self.mark = Mark
-       self.nrec = Nrec
-       self.htmlcontent = Html
+
+
+class User(Document):
+    email = StringField(required=True)
+    first_name = StringField(max_length=50)
+    last_name = StringField(max_length=50)
 

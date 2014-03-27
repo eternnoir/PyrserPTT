@@ -7,6 +7,8 @@ from PyrserPTT import Artical, PttHtmlGraber
 
 class PyserPtt(object):
 
+    mainArticalList = []
+    listMaxLength = 200
     def __init__(self,board,sleeptime):
         self._board = board
         self._sleepTime = sleeptime
@@ -19,29 +21,50 @@ class PyserPtt(object):
         for articalset in soup.findAll('div', attrs={'class': 'r-ent'}):
             try:
                 if articalset.find('span') is not None:
-                    nrec = str(articalset.find('span').text)
+                    Nrec = str(articalset.find('span').text)
                 else:
-                    nrec = '0'
+                    Nrec = '0'
                 titleset=  articalset.find('div',attrs={'class':'title'})
-                url = titleset.find('a')['href']
-                title = titleset.text
-                mark =  articalset.find('div',attrs={'class':'mark'}).text
-                author =  articalset.find('div',attrs={'class':'author'}).text
-                date =  articalset.find('div',attrs={'class':'date'}).text
-                #self._graber.getBrowser().open(url)
-                #html = self._graber.getBrowser().response().read()
+                Url = titleset.find('a')['href']
+                Title = titleset.text
+                Mark =  articalset.find('div',attrs={'class':'mark'}).text
+                Author =  articalset.find('div',attrs={'class':'author'}).text
+                Date =  articalset.find('div',attrs={'class':'date'}).text
+                self._graber.getBrowser().open(Url)
+                Html = self._graber.getBrowser().response().read()
                 #print html
-                a = Artical.Artical(title,author,url,date,nrec,mark,'')
+                a = Artical.Artical(title=Title,nrec=Nrec,url=Url,mark=Mark,
+                                    date=Date,author=Author,htmlcontent=Html,board=self._board)
                 articalList.append(a)
 
-            except:
-                print "error"
+            except Exception,e:
+                print str(e)
                 continue
         return articalList
 
 
     def start(self):
         self._graber.getHtmlContent()
+
+    def getNewArticals(self):
+        nowList = self.parserHtmltoArtical()
+        returnList = []
+        for na in nowList:
+            isContain = False
+            for aa in self.mainArticalList:
+                if na.url == aa.url:
+                    isContain = True
+            if len(self.mainArticalList)>self.listMaxLength:
+                self.mainArticalList.pop(0)
+
+            if isContain is False:
+                self.mainArticalList.append(na)
+                returnList.append(na)
+
+        return returnList
+
+
+
 
 
 
