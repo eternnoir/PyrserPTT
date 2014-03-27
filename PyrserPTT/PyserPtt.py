@@ -30,11 +30,10 @@ class PyserPtt(object):
                 Mark =  articalset.find('div',attrs={'class':'mark'}).text
                 Author =  articalset.find('div',attrs={'class':'author'}).text
                 Date =  articalset.find('div',attrs={'class':'date'}).text
-                self._graber.getBrowser().open(Url)
-                Html = self._graber.getBrowser().response().read()
+
                 #print html
                 a = Artical.Artical(title=Title,nrec=Nrec,url=Url,mark=Mark,
-                                    date=Date,author=Author,htmlcontent=Html,board=self._board)
+                                    date=Date,author=Author,board=self._board)
                 articalList.append(a)
 
             except Exception,e:
@@ -59,6 +58,9 @@ class PyserPtt(object):
                 self.mainArticalList.pop(0)
 
             if isContain is False:
+                self._graber.getBrowser().open(na.url)
+                Html = self._graber.getBrowser().response().read()
+                na.htmlcontent=Html
                 self.mainArticalList.append(na)
                 returnList.append(na)
 
