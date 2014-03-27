@@ -8,7 +8,7 @@ from PyrserPTT import Artical, PttHtmlGraber
 class PyserPtt(object):
 
     mainArticalList = []
-    listMaxLength = 200
+    listMaxLength = 30
     def __init__(self,board,sleeptime):
         self._board = board
         self._sleepTime = sleeptime
@@ -55,6 +55,7 @@ class PyserPtt(object):
                 if na.url == aa.url:
                     isContain = True
             if len(self.mainArticalList)>self.listMaxLength:
+                print 'del frome list'
                 self.mainArticalList.pop(0)
 
             if isContain is False:
