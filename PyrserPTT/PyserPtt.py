@@ -1,9 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import PttHtmlGraber
-from BeautifulSoup import BeautifulSoup, NavigableString
-import Artical
+from BeautifulSoup import BeautifulSoup
+from PyrserPTT import Artical, PttHtmlGraber
 
 
 class PyserPtt(object):
