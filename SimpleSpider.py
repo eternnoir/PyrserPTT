@@ -6,8 +6,8 @@ from mongoengine import *
 from PyrserPTT import PyserPtt
 import time
 import random
-
-__author__ = 'frankwang'
+import sys
+__author__ = 'eternnoir'
 
 
 connect('ptt',host='')
@@ -33,3 +33,6 @@ class SimplePTTSpider(object):
             time.sleep(random.randint(5,50))
 
 
+if __name__ == '__main__':
+    s = SimplePTTSpider(sys.argv[1])
+    s.Start()
