@@ -7,12 +7,12 @@ from PyrserPTT import Artical, PttHtmlGraber
 
 class PyserPtt(object):
 
-    mainArticalList = []
     listMaxLength = 30
     def __init__(self,board,sleeptime):
         self._board = board
         self._sleepTime = sleeptime
         self._graber = PttHtmlGraber.WebPttBot(board)
+        self.mainArticalList = []
 
     def parserHtmltoArtical(self):
         html = self._graber.getHtmlContent()
@@ -56,7 +56,7 @@ class PyserPtt(object):
             if len(self.mainArticalList)>self.listMaxLength:
                 print 'del frome list'
                 self.mainArticalList.pop(0)
-
+            print len(self.mainArticalList)
             if isContain is False:
                 self._graber.getBrowser().open(na.url)
                 Html = self._graber.getBrowser().response().read()
