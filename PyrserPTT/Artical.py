@@ -7,7 +7,6 @@ __author__ = 'frankwang'
 
 
 class Artical(Document):
-
     title = StringField(required=True)
     board = StringField(required=True)
     author= StringField()

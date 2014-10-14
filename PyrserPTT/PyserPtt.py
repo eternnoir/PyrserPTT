@@ -4,19 +4,23 @@
 from BeautifulSoup import BeautifulSoup
 from PyrserPTT import Artical, PttHtmlGraber
 
+pttSiteUrl = 'http://www.ptt.cc'
+pttUrlTmp = pttSiteUrl+'/bbs/{0}/'
 
 class PyserPtt(object):
 
     listMaxLength = 30
 
-    def __init__(self, board, sleeptime):
+    def __init__(self, board,pages=1):
         self._board = board
-        self._sleepTime = sleeptime
+        self._url = pttUrlTmp.format(board)+'index.html'
+        self._pages = pages
         self._graber = PttHtmlGraber.WebPttBot(board)
-        self.mainArticalList = []
 
-    def parserHtmltoArtical(self):
-        html = self._graber.getHtmlContent()
+    def parserHtmltoArtical(self,url=None):
+        if url is None:
+            url = self._url
+        html = self._graber.getHtmlContent(url)
         soup = BeautifulSoup(html)
         articalList = []
         for articalset in soup.findAll('div', attrs={'class': 'r-ent'}):
@@ -51,24 +55,20 @@ class PyserPtt(object):
     def start(self):
         self._graber.getHtmlContent()
 
-    def getNewArticals(self):
-        nowList = self.parserHtmltoArtical()
-        returnList = []
-        for na in nowList:
-            isContain = False
-            for aa in self.mainArticalList:
-                if na.url == aa.url:
-                    isContain = True
-            if len(self.mainArticalList) > self.listMaxLength:
-                print 'del frome list'
-                o = self.mainArticalList.pop(0)
-                del o
-            print len(self.mainArticalList)
-            if isContain is False:
-                self._graber.getBrowser().open(na.url)
-                Html = self._graber.getBrowser().response().read()
-                na.htmlcontent = Html
-                self.mainArticalList.append(na)
-                returnList.append(na)
+    def getArticalList(self):
+        retList = []
+        priUrl = self._url
+        for i in range(self._pages):
+            print priUrl
+            retList.extend(self.parserHtmltoArtical(priUrl))
+            priUrl = pttSiteUrl+self._getPriUrl(priUrl)
+        return retList
 
-        return returnList
+    def _getPriUrl(self,currentUrl):
+        html = self._graber.getHtmlContent(currentUrl)
+        print currentUrl
+        soup = BeautifulSoup(html)
+        for link in soup.findAll('a',href=True):
+            if u'上頁' in link.text:
+                return link['href']
+

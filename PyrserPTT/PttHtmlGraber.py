@@ -11,10 +11,8 @@ import mechanize
 
 class WebPttBot(object):
 
-    def __init__(self, boardName):
-        self._url = 'http://www.ptt.cc/bbs/{0}/index.html'.format(boardName)
-        self._board = boardName
-
+    def __init__(self,board):
+        self._board = board
         # Browser
         self._br = mechanize.Browser()
 
@@ -56,7 +54,8 @@ class WebPttBot(object):
     def getBrowser(self):
         return self._br
 
-    def getHtmlContent(self):
+    def getHtmlContent(self,url):
+        self._url = url
         if self.__checkPage__() is True:
             response =  self._br.open(self._url)
             return response.read()
