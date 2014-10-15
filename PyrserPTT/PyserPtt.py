@@ -9,8 +9,6 @@ pttUrlTmp = pttSiteUrl+'/bbs/{0}/'
 
 class PyserPtt(object):
 
-    listMaxLength = 30
-
     def __init__(self, board,pages=1):
         self._board = board
         self._url = pttUrlTmp.format(board)+'index.html'
@@ -35,6 +33,7 @@ class PyserPtt(object):
                 Mark = articalset.find('div', attrs={'class': 'mark'}).text
                 Author = articalset.find('div', attrs={'class': 'author'}).text
                 Date = articalset.find('div', attrs={'class': 'date'}).text
+                AHtml = self._graber.getHtmlContent(pttSiteUrl+Url)
 
                 # print html
                 a = Artical.Artical(
@@ -44,7 +43,8 @@ class PyserPtt(object):
                     mark=Mark,
                     date=Date,
                     author=Author,
-                    board=self._board)
+                    board=self._board,
+                    htmlcontent = AHtml)
                 articalList.append(a)
 
             except Exception as e:
