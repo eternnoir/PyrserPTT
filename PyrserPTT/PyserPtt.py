@@ -3,17 +3,19 @@
 
 from BeautifulSoup import BeautifulSoup
 from PyrserPTT import Artical, PttHtmlGraber
+import time
 
 pttSiteUrl = 'http://www.ptt.cc'
 pttUrlTmp = pttSiteUrl+'/bbs/{0}/'
 
 class PyserPtt(object):
 
-    def __init__(self, board,pages=1):
+    def __init__(self, board,pages=1,intervalSec = 1):
         self._board = board
         self._url = pttUrlTmp.format(board)+'index.html'
         self._pages = pages
         self._graber = PttHtmlGraber.WebPttBot(board)
+        self._intervalSec = intervalSec
 
     def parserHtmltoArtical(self,url=None):
         if url is None:
@@ -22,6 +24,7 @@ class PyserPtt(object):
         soup = BeautifulSoup(html)
         articalList = []
         for articalset in soup.findAll('div', attrs={'class': 'r-ent'}):
+            time.sleep(self._intervalSec)
             try:
                 if articalset.find('span') is not None:
                     Nrec = str(articalset.find('span').text)
