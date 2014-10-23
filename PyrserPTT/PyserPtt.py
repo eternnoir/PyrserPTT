@@ -10,10 +10,11 @@ pttUrlTmp = pttSiteUrl+'/bbs/{0}/'
 
 class PyserPtt(object):
 
-    def __init__(self, board,pages=1,intervalSec = 1):
+    def __init__(self, board,pages=1,intervalSec = 1,fromPage=0):
         self._board = board
         self._url = pttUrlTmp.format(board)+'index.html'
-        self._pages = pages
+        self._pages = pages+fromPage
+        self._fromPage = fromPage
         self._graber = PttHtmlGraber.WebPttBot(board)
         self._intervalSec = intervalSec
 
@@ -62,9 +63,11 @@ class PyserPtt(object):
         retList = []
         priUrl = self._url
         for i in range(self._pages):
+            if i < self._fromPage:
+                priUrl = pttSiteUrl+self._getPriUrl(priUrl)
+                continue
             print priUrl
             retList.extend(self.parserHtmltoArtical(priUrl))
-            priUrl = pttSiteUrl+self._getPriUrl(priUrl)
         return retList
 
     def _getPriUrl(self,currentUrl):

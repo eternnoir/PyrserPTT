@@ -8,10 +8,14 @@ import time
 import hashlib
 import sys
 
-connect('admin',host='mongodb://')
+#connect('admin',host='mongodb://')
 
-boardList = []
+#boardList = []
 
+
+connect('admin',host='mongodb://root:qwedsa@104.131.106.142/admin')
+
+boardList = ['Gossiping','sex','Boy-Girl','C_Chat','feminine_sex']
 
 
 def getNewAtricalByBorad(board,pages=2):
