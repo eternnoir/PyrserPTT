@@ -33,16 +33,16 @@ class WebPttBot(object):
         self._br.addheaders = [('User-agent', "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1)"
                                               " Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1")]
 
-    def __checkPage__(self):
+    def __checkPage(self):
         response = self._br.open(self._url)
         currentUrl = response.geturl()
         print currentUrl
         if "over18" in currentUrl:
-            return self.___confirmOver18__()
+            return self.___confirmOver18()
         else:
            return True
 
-    def ___confirmOver18__(self):
+    def ___confirmOver18(self):
         self._br.select_form(nr=0)
         response = self._br.submit()
         url = response.geturl()
@@ -54,10 +54,10 @@ class WebPttBot(object):
     def getBrowser(self):
         return self._br
 
-    def getHtmlContent(self,url):
+    def getHtmlContent(self, url):
         self._url = url
-        if self.__checkPage__() is True:
-            response =  self._br.open(self._url)
+        if self.__checkPage() is True:
+            response = self._br.open(self._url)
             return response.read()
         else:
             raise Exception("Can not open target page")
