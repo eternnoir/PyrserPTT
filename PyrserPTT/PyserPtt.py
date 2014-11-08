@@ -68,6 +68,7 @@ class PyserPtt(object):
                 continue
             print priUrl
             retList.extend(self.parserHtmltoArtical(priUrl))
+            priUrl = pttSiteUrl+self._getPriUrl(priUrl)
         return retList
 
     def _getPriUrl(self,currentUrl):
