@@ -14,7 +14,6 @@ boardList = []
 
 
 
-
 def getNewAtricalByBorad(board,pages=2):
     graber = PyserPtt.PyserPtt(board,pages)
     articalList = graber.getArticalList()
@@ -47,11 +46,11 @@ def getMd5(ori):
     return md5str
 
 def doGrabing():
-     while True:
+    while True:
         print 'Grabing.....'
         pool = multiprocessing.Pool(processes=len(boardList))
         for b in boardList:
-            pool.apply_async(getNewAtricalByBorad,(b,))
+            pool.apply_async(getNewAtricalByBorad,(b,4,))
         pool.close()
         pool.join()
         print 'Sleep.....'
